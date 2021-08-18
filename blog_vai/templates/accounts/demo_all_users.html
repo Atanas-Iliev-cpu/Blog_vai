@@ -1,0 +1,26 @@
+{% extends 'shared/base.html' %}
+{% block content %}
+    <div style="display: flex;
+    flex-direction: column;
+    align-items: center;">
+    <p style="font-size:300% ">This is all Users</p>
+        {% for user in object_list %}
+
+            <div class="card" style="width: 40rem;">
+                <div class="card-body" style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+">
+                    <h5 class="card-title">Username: {{ user.username }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Email: {{ user.email }}</h6>
+                    <p class="card-text">Date of registered: {{ user.date_joined }}</p>
+                    {#    <a href="#" class="card-link">Card link</a>#}
+                    <a href="#" class="card-link">Delete profile</a>
+                </div>
+            </div>
+            <br/>
+            <br/>
+        {% endfor %}
+    </div>
+{% endblock %}

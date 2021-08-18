@@ -3,7 +3,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, FormView
+from django.views.generic import CreateView, FormView, ListView
+from django.views.generic.detail import SingleObjectMixin
 
 from blog_vai.accounts.forms import RegisterForm, LogInForm, ProfileForm
 from blog_vai.accounts.models import Profile
@@ -33,10 +34,10 @@ class RegisterView(CreateView):
     template_name = 'accounts/register.html'
     success_url = reverse_lazy('index')
 
-    # def form_valid(self, form):
-    #     result = super().form_valid(form)
-    #     login(self.request, self.object)
-    #     return result
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        login(self.request, self.object)
+        return result
 
 
 class LogInView(LoginView):
@@ -50,3 +51,10 @@ class LogInView(LoginView):
 def logout_user(request):
     logout(request)
     return redirect('index')
+
+
+class UsersListView(ListView):
+    model = UserModel
+    # template_name = 'shared/base.html'
+    template_name = 'accounts/demo_all_users.html'
+

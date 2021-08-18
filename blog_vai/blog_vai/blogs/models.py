@@ -25,5 +25,5 @@ class Blog(models.Model):
 
     # image_url = models.URLField()
     # image = models.ImageField(
-    #     upload_to= 'pets'
+    #     upload_to= 'blogs'
     # )
