@@ -1,12 +1,30 @@
 from django.contrib.auth import login, get_user_model, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView
+from django.views.generic import CreateView, FormView
 
-from blog_vai.accounts.forms import RegisterForm, LogInForm
+from blog_vai.accounts.forms import RegisterForm, LogInForm, ProfileForm
+from blog_vai.accounts.models import Profile
+from blog_vai.blogs.models import Blog
 
 UserModel = get_user_model()
+
+
+class ProfileDetailsView(LoginRequiredMixin, FormView):
+    form_class = ProfileForm
+    template_name = 'accounts/user_profile.html'
+    success_url = reverse_lazy('profile details')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = Profile.objects.get(pk=self.request.user.id)
+        user_blogs = Blog.objects.filter(pk=self.request.user.id)
+
+        context['blogs'] = user_blogs
+        context['profile'] = profile
+        return context
 
 
 class RegisterView(CreateView):

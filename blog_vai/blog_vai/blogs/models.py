@@ -1,8 +1,10 @@
+from django.contrib.auth import get_user_model
 from django.db import models
+
+UserModel = get_user_model()
 
 
 class Blog(models.Model):
-
     title = models.CharField(
         max_length=50,
     )
@@ -16,12 +18,12 @@ class Blog(models.Model):
     date_joined = models.DateTimeField(
         auto_now_add=True,
     )
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.CASCADE,
+    )
+
     # image_url = models.URLField()
     # image = models.ImageField(
     #     upload_to= 'pets'
-    # )
-
-    # user = models.ForeignKey(
-    #     UserModel,
-    #     on_delete=models.CASCADE,
     # )

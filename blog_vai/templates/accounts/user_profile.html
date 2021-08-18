@@ -1,0 +1,49 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="text-center">
+        <h1>Hello, {{ request.user }}!</h1>
+        <h5>This is your profile</h5>
+        {% if profile.profile_image %}
+            <img class="rounded-circle mb-3" src="{{ profile.profile_image.url }}" alt="" width="140" height="140">
+            <div class="w-50 m-auto">
+        {% else %}
+            <img class="rounded-circle mb-3" src="{% static 'images/anonimous.png' %}" alt="" width="140" height="140">
+            <div class="w-50 m-auto">
+        {% endif %}
+        <form action="{% url 'profile details' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form }}
+            <button class="btn btn-success">Update</button>
+        </form>
+        </div>
+        </div>
+        <hr>
+        {% if blogs %}
+            <h2 class='text-center'>These are you blogs</h2>
+            <div class="row">
+                <div class="row">
+                    {% for blog in blogs %}
+                        <div class="col-lg-4">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{{ pet.image }}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ blog.theme }} {{ blog.title }}, Age: {{ blog.date_joined }}</h5>
+                                    <p class="card-text">{{ blog.description }}</p>
+                                    <p class="card-text"><strong>Owner: {{ request.user }}</strong></p>
+                                    <a href="#" class="btn btn-primary">See details</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <div class="text-center">
+                <h2>You have no posts yet.</h2>
+                <a href="#" class="btn btn-success">Add new post</a>
+            </div>
+            </div>
+        {% endif %}
+{% endblock %}
