@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, CreateView, DetailView, FormView, UpdateView, DeleteView
+from django.views.generic.detail import SingleObjectMixin
 
 from blog_vai.blogs.models import Blog
 from blog_vai.comments.forms import CommentForm

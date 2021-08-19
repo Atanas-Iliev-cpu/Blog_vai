@@ -21,13 +21,14 @@ class RegisterForm(UserCreationForm):
 
 
 class LogInForm(AuthenticationForm):
-    user = None
-    username = forms.CharField(
-        max_length=50,
-    )
-    password = forms.CharField(
-        widget=forms.PasswordInput(),
-    )
+    pass
+    # user = None
+    # username = forms.CharField(
+    #     max_length=50,
+    # )
+    # password = forms.CharField(
+    #     widget=forms.PasswordInput(),
+    # )
     #
     # def clean_password(self):
     #     self.user = authenticate(

@@ -44,7 +44,7 @@
                 <h3>There are no comments for this blog. </h3>
             </div>
         {% endif %}
-    {% if is_owner %}
+{#    {% if is_owner %}#}
         <div class="box">
             <form method="post" action="{% url 'comment blog' object.id %}">
                 {% csrf_token %}
@@ -52,6 +52,6 @@
                 <button class="btn btn-primary mt-2" type="submit">Add comment</button>
             </form>
         </div>
-    {% endif %}
+{#    {% endif %}#}
     </div>
 {% endblock %}

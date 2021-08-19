@@ -1,0 +1,25 @@
+{% extends 'shared/base.html' %}
+
+{% block content %}
+    <div style="display: flex;
+    flex-direction: column;
+    align-items: center;">
+
+        {% for blog in blogs %}
+
+            <div class="card" style="width: 69rem;">
+  <div class="card-body">
+    <h5 class="card-title">{{ blog.title }}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">{{ blog.theme }}</h6>
+    <p class="card-text">{{ blog.description }}</p>
+    <a href="{% url 'details blog' blog.id %}" class="card-link">Details</a>
+{#    <a href="#" class="card-link">Another link</a>#}
+  </div>
+</div>
+            <br/>
+            <br/>
+
+        {% endfor %}
+    </div>
+
+{% endblock %}

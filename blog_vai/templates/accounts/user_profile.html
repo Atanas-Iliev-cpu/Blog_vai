@@ -4,46 +4,63 @@
 {% block content %}
     <div class="text-center">
         <h1>Hello, {{ request.user }}!</h1>
-        <h5>This is your profile</h5>
+        <h5>This is your profile picture.</h5>
+        <h5>You can change it anytime. </h5>
         {% if profile.profile_image %}
             <img class="rounded-circle mb-3" src="{{ profile.profile_image.url }}" alt="" width="140" height="140">
             <div class="w-50 m-auto">
-        {% else %}
-            <img class="rounded-circle mb-3" src="{% static 'images/anonimous.png' %}" alt="" width="140" height="140">
-            <div class="w-50 m-auto">
+                {% else %}
+                {#            <div class="w3-display-container">#}
+                {#            <div class="w3-display-topmiddle w3-container">Top Middle#}
+                <img class="rounded-circle m-5" src="{% static 'images/481401.jpg' %}" alt="" width="140" height="140">
+                <div class="w-50 m-auto">
+            </div>
+            {#            <div class="w-50 m-auto">#}
         {% endif %}
         <form action="{% url 'profile details' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form }}
             <button class="btn btn-success">Update</button>
+            <a href="{% url 'delete account' user.id %}" class="btn btn-danger">Delete</a>
         </form>
-        </div>
-        </div>
-        <hr>
-        {% if blogs %}
-            <h2 class='text-center'>These are you blogs</h2>
+    </div>
+    </div>
+    <hr>
+    {% if blogs %}
+        <h2 class='text-center'>These are you blogs</h2>
+        <div class="row">
             <div class="row">
-                <div class="row">
-                    {% for blog in blogs %}
-                        <div class="col-lg-4">
-                            <div class="card" style="width: 18rem;">
-                                <img src="{{ pet.image }}" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ blog.theme }} {{ blog.title }}, Age: {{ blog.date_joined }}</h5>
-                                    <p class="card-text">{{ blog.description }}</p>
-                                    <p class="card-text"><strong>Owner: {{ request.user }}</strong></p>
-                                    <a href="#" class="btn btn-primary">See details</a>
-                                </div>
+                {#                    {% for blog in blogs %}#}
+                <div class="col-lg-4">
+                    {% for blog in request.user.blog_set.all %}
+                        <div class="card" style="width: 69rem;">
+                            {#                                <img src="{{ pet.image }}" class="card-img-top" alt="...">#}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ blog.title }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ blog.theme }}</h6>
+                                <p class="card-text">{{ blog.description }}</p>
+                                <a href="{% url 'details blog' blog.id %}" class="card-link">Details</a>
                             </div>
                         </div>
+                        </br>
+                        </br>
                     {% endfor %}
+
+                    {#                            {% for coment in blog.user.comment_set.all %}#}
+                    {% for coment in comments %}
+                        <p>Comments: {{ coment.text }} </p>
+                        {#                            <p>Comments: {{ coment.blog.title }} </p>#}
+                    {% endfor %}
+
                 </div>
+                {#                    {% endfor %}#}
             </div>
-        {% else %}
-            <div class="text-center">
-                <h2>You have no posts yet.</h2>
-                <a href="#" class="btn btn-success">Add new post</a>
-            </div>
-            </div>
-        {% endif %}
+        </div>
+    {% else %}
+        <div class="text-center">
+            <h2>You have no posts yet.</h2>
+            <a href="#" class="btn btn-success">Add new post</a>
+        </div>
+        </div>
+    {% endif %}
 {% endblock %}
