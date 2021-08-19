@@ -49,7 +49,7 @@
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             {% if request.user.is_authenticated %}
                 {% if request.user.is_superuser %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'all users' %}">See all users</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'all users' %}">See all users </a></li>
                 {% endif %}
                 <li class="nav-item"><a class="nav-link" href="{% url 'profile details' %}">Welcome, {{ request.user }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'logout user' %}">Logout</a></li>
@@ -68,11 +68,15 @@
 <header class="py-5 bg-light border-bottom mb-4">
     <div class="container">
         <div class="text-center my-5">
-            {#                    <h1 class="fw-bolder">Welcome to </h1>#}
+
             <h1 class="fw-bolder">BLOG-VAI!</h1>
 
             <p class="lead mb-0">Here you are free to share your thoughts ... </p>
-            <p class="lead mb-0">Sign in and begin</p>
+                        {% if not request.user.is_authenticated %}
+            <p class="lead mb-0"> If you still don't have an account
+                <a style="font-weight: bolder;
+    color: #212529;" href="{% url 'register user' %}">Register here</a> and let's begin</p>
+            {% endif %}
         </div>
     </div>
 </header>

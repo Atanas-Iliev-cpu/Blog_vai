@@ -4,16 +4,20 @@
     <div style="display: flex;
     flex-direction: column;
     align-items: center;">
-
+<h1>Your Posts &dArr;</h1>
         {% for blog in blogs %}
 
-            <div class="card" style="width: 69rem;">
+          <div class="card" style="width: 69rem; background: lightgrey; width: 45%;
+">
   <div class="card-body">
-    <h5 class="card-title">{{ blog.title }}</h5>
-    <h6 class="card-subtitle mb-2 text-muted">{{ blog.theme }}</h6>
-    <p class="card-text">{{ blog.description }}</p>
-    <a href="{% url 'details blog' blog.id %}" class="card-link">Details</a>
-{#    <a href="#" class="card-link">Another link</a>#}
+    <h5 class="card-title" style=" font-size: 30px;">{{ blog.title}}</h5>
+    <h6 class="card-subtitle mb-2 text-muted" style=" font-size: 25px;">Author: {{ blog.user }}</h6>
+      <div>
+    <p class="card-text">Posted on: {{ blog.date_joined }}</p>
+          </div>
+    <a href="{% url 'details blog' blog.id %}" class="card-link" style="display: flex;
+    flex-direction: column;
+    align-items: flex-end;">Go to post</a>
   </div>
 </div>
             <br/>

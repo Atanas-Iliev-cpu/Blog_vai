@@ -3,7 +3,7 @@
     <div style="display: flex;
     flex-direction: column;
     align-items: center;">
-        <p style="font-size:300% ">This is all Users</p>
+        <p style="font-size:300% ">All Users &dArr;</p>
         {% for user in object_list %}
             {% if not user.is_superuser %}
                 <div class="card" style="width: 40rem;">
@@ -15,7 +15,7 @@
                         <h5 class="card-title">Username: {{ user.username }}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Email: {{ user.email }}</h6>
                         <p class="card-text">Date of registered: {{ user.date_joined }}</p>
-{#                            <a href="{% url 'profile details' user.id %}" class="card-link">User Details</a>#}
+{#                            <a href="{% url 'profile details' %}" class="card-link">User Details</a>#}
                         <a href="{% url 'delete account' user.id %}" class="card-link">Delete user</a>
                     </div>
                 </div>

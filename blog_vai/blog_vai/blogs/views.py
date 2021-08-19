@@ -24,7 +24,7 @@ class BlogEditView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('index')
 
 
-class BlogDetailView(DetailView):
+class BlogDetailView(LoginRequiredMixin, DetailView):
     model = Blog
     # template_name = 'blogs/detail-blog.html'
     template_name = 'blogs/demo_blog_detail.html'
