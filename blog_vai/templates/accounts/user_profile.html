@@ -9,11 +9,11 @@
         {% if profile.profile_image %}
             <img class="rounded-circle mb-3" src="{{ profile.profile_image.url }}" alt="" width="140" height="140">
             <div class="w-50 m-auto">
-                {% else %}
-                {#            <div class="w3-display-container">#}
-                {#            <div class="w3-display-topmiddle w3-container">Top Middle#}
-                <img class="rounded-circle m-5" src="{% static 'images/481401.jpg' %}" alt="" width="140" height="140">
-                <div class="w-50 m-auto">
+        {% else %}
+            {#            <div class="w3-display-container">#}
+            {#            <div class="w3-display-topmiddle w3-container">Top Middle#}
+            <img class="rounded-circle m-5" src="{% static 'images/481401.jpg' %}" alt="" width="140" height="140">
+            <div class="w-50 m-auto">
             </div>
             {#            <div class="w-50 m-auto">#}
         {% endif %}
@@ -23,38 +23,51 @@
             <button class="btn btn-success">Update</button>
             <a href="{% url 'delete account' user.id %}" class="btn btn-danger">Delete</a>
         </form>
-    </div>
+        </div>
     </div>
     <hr>
     {% if blogs %}
         <h2 class='text-center'>These are you blogs</h2>
-        <div class="row">
-            <div class="row">
-                {#                    {% for blog in blogs %}#}
-                <div class="col-lg-4">
-                    {% for blog in request.user.blog_set.all %}
-                        <div class="card" style="width: 69rem;">
-                            {#                                <img src="{{ pet.image }}" class="card-img-top" alt="...">#}
-                            <div class="card-body">
-                                <h5 class="card-title">{{ blog.title }}</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">{{ blog.theme }}</h6>
-                                <p class="card-text">{{ blog.description }}</p>
-                                <a href="{% url 'details blog' blog.id %}" class="card-link">Details</a>
-                            </div>
-                        </div>
-                        </br>
-                        </br>
-                    {% endfor %}
 
-                    {#                            {% for coment in blog.user.comment_set.all %}#}
-                    {% for coment in comments %}
-                        <p>Comments: {{ coment.text }} </p>
-                        {#                            <p>Comments: {{ coment.blog.title }} </p>#}
-                    {% endfor %}
-
+        {% for blog in request.user.blog_set.all %}
+            <div class="card" style="width: 69rem; background: lightgrey; width: 45%;
+">
+                <div class="card-body">
+                    <h5 class="card-title" style=" font-size: 30px;">{{ blog.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted" style=" font-size: 25px;">Theme: {{ blog.theme }}</h6>
+                    <div>
+                        <p class="card-text">Posted on: {{ blog.date_joined }}</p>
+                    </div>
+                    <a href="{% url 'details blog' blog.id %}" class="card-link" style="display: flex;
+    flex-direction: column;
+    align-items: flex-end;">Read more..</a>
                 </div>
-                {#                    {% endfor %}#}
             </div>
+            <br/>
+            <br/>
+
+        {% endfor %}
+
+        {% if comments %}
+            <h2 class='text-center'>These are you comments</h2>
+            {% for comment in comments %}
+                <div class="card" style="width: 100%;">
+                <div class="card-body">
+                    <h5 class="card-title" style=" font-size: 30px;">On this post: {{ comment.blog.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted" style=" font-size: 25px;">You
+                        write: {{ comment.text }}</h6>
+                    <div>
+                    </div>
+                </div>
+                <br/>
+                <br/>
+                <hr>
+
+            {% endfor %}
+        {% endif %}
+
+    </div>
+        </div>
         </div>
     {% else %}
         <div class="text-center">

@@ -41,17 +41,23 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-">Comments: &dArr;</h2>
+">Post comments: &dArr;</h2></br>
             <div>
             {% for comment in comments %}
                 <div class="box">
                     <h5>'{{ comment.user }}' say: <em>{{ comment.text }}</em></h5>
+                     {% if is_owner or request.user.is_superuser %}
+                    <a href="{% url 'delete comment' comment.id %}" class="btn btn-danger" style="width: 150px;
+    color: #dc3545;
+    background-color: #41464b;
+    border-color: #dc3545;">Delete Comment</a>
+                    {% endif %}
                     <hr>
                 </div>
             {% endfor %}
         {% else %}
             <div class="box">
-                <h3>There are no comments for this blog. </h3>
+                <h3>There are no comments for this post yet. Your can be the first one. </h3>
             </div>
         {% endif %}
 {#    {% if is_owner %}#}

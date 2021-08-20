@@ -9,6 +9,7 @@ class SiteUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(
         max_length=50,
         unique=True,
+
     )
 
     first_name = models.CharField(
@@ -46,6 +47,7 @@ class Profile(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
+
 
 
 from .signals import *

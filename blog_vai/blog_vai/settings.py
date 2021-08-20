@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'blog_vai.comments',
 ]
 
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

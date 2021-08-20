@@ -8,7 +8,9 @@ UserModel = get_user_model()
 
 class Comment(models.Model):
     text = models.TextField()
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    blog = models.ForeignKey(
+        Blog,
+        on_delete=models.CASCADE)
     user = models.ForeignKey(
         UserModel,
         on_delete=models.CASCADE,

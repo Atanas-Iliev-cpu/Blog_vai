@@ -1,3 +1,5 @@
+from collections import Set
+
 from django.contrib.auth import login, get_user_model, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
@@ -36,12 +38,17 @@ class ProfileDetailsView(LoginRequiredMixin, FormView):
         profile = Profile.objects.get(pk=self.request.user.id)
         user_blogs = Blog.objects.filter(user_id=self.request.user.id)
         comments = Comment.objects.filter(user_id=self.request.user.id)
+        comment_blogs = Comment.objects.filter(user_id=self.request.user.id).distinct('blog_id')
 
         context['blogs'] = user_blogs
         context['profile'] = profile
         context['comments'] = comments
+        context['comment_blogs'] = comment_blogs
 
         return context
+
+
+
 
 
 class RegisterView(CreateView):
@@ -114,12 +121,13 @@ class FavBlogsListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # profile = Profile.objects.get(pk=self.request.user.id)
-        # user_blogs = Blog.objects.filter(user_id=self.request.user.id)
+        user_blogs = Blog.objects.filter(user_id=self.request.user.id)
         # fav_blogs = Blog.objects.filter(user_id=self.request.user.id)
-        comments = Comment.objects.filter(user_id=self.request.user.id)
+        comments = Comment.objects.filter(user_id=self.request.user.id).distinct('blog_id')
 
         # context['blogs'] = user_blogs
         # context['profile'] = profile
         context['comments'] = comments
 
         return context
+

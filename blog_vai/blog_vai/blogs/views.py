@@ -41,7 +41,7 @@ class BlogDetailView(LoginRequiredMixin, DetailView):
         #     .exists()
         context['comment_form'] = CommentForm(
             initial={
-                'pet_pk': self.object.id,
+                'blog_pk': self.object.id,
             }
         )
         context['comments'] = blog.comment_set.all()
@@ -55,6 +55,7 @@ class BlogListView(ListView):
     model = Blog
     # template_name = 'shared/base.html'
     template_name = 'index.html'
+
 
 
 class BlogCreateView(LoginRequiredMixin, CreateView):
