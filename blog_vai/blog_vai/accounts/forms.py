@@ -11,17 +11,21 @@ UserModel = get_user_model()
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('profile_image',)
+        fields = ('profile_image', 'first_name', 'last_name', 'phone_number')
 
 
 class RegisterForm(UserCreationForm):
     class Meta:
         model = UserModel
-        fields = ['username', 'email']
+        fields = ['email']
 
 
 class LogInForm(AuthenticationForm):
-    pass
+    error_messages = {
+        'invalid_login': (
+            "Please enter a correct E-mail address and password."
+            " This fields are case-sensitive."
+        )}
     # user = None
     # username = forms.CharField(
     #     max_length=50,

@@ -7,7 +7,12 @@ UserModel = get_user_model()
 
 
 class Comment(models.Model):
+
     text = models.TextField()
+
+    date_joined = models.DateTimeField(
+        auto_now_add=True,
+    )
     blog = models.ForeignKey(
         Blog,
         on_delete=models.CASCADE)

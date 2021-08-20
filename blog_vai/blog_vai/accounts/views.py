@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, FormView, ListView, DeleteView
+from django.views.generic import CreateView, FormView, ListView, DeleteView, UpdateView
 from django.views.generic.detail import SingleObjectMixin
 
 from blog_vai.accounts.forms import RegisterForm, LogInForm, ProfileForm
@@ -14,6 +14,19 @@ from blog_vai.blogs.models import Blog
 from blog_vai.comments.models import Comment
 
 UserModel = get_user_model()
+
+
+class ProfileEditView(FormView, UpdateView):
+    model = Profile
+    form_class = ProfileForm
+    template_name = 'accounts/edit_profile.html'
+    success_url = reverse_lazy('profile details')
+
+    def form_valid(self, form):
+        profile = Profile.objects.get(pk=self.request.user.id)
+        profile.profile_image = form.cleaned_data['profile_image']
+        profile.save()
+        return super().form_valid(form)
 
 
 class AccountDeleteView(LoginRequiredMixin, DeleteView):
@@ -27,11 +40,11 @@ class ProfileDetailsView(LoginRequiredMixin, FormView):
     template_name = 'accounts/user_profile.html'
     success_url = reverse_lazy('profile details')
 
-    def form_valid(self, form):
-        profile = Profile.objects.get(pk=self.request.user.id)
-        profile.profile_image = form.cleaned_data['profile_image']
-        profile.save()
-        return super().form_valid(form)
+    # def form_valid(self, form):
+    #     profile = Profile.objects.get(pk=self.request.user.id)
+    #     profile.profile_image = form.cleaned_data['profile_image']
+    #     profile.save()
+    #     return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -10,11 +10,12 @@ UserModel = get_user_model()
 
 @admin.register(UserModel)
 class SiteUserAdmin(UserAdmin):
+    list_display = ('email', 'is_staff',)
     list_filter = ('is_staff', 'is_superuser', 'groups')
+    ordering = ('email',)
 
     fieldsets = (
-        (None, {'fields': ('username', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
+        (None, {'fields': ('email', 'password')}),
         (_('Permissions'), {
             'fields': ('is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
@@ -24,6 +25,6 @@ class SiteUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'password1', 'password2'),
+            'fields': ('email', 'password1', 'password2'),
         }),
     )
