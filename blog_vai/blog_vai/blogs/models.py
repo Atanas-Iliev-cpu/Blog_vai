@@ -22,8 +22,3 @@ class Blog(models.Model):
         UserModel,
         on_delete=models.CASCADE,
     )
-
-    # image_url = models.URLField()
-    # image = models.ImageField(
-    #     upload_to= 'blogs'
-    # )

@@ -95,16 +95,3 @@ class BlogCommentView(LoginRequiredMixin, View):
 
     def form_invalid(self, form):
         pass
-# @login_required
-# def comment_blog(request, pk):
-#     blog = Blog.objects.get(pk=pk)
-#     form = CommentForm(request.POST)
-#     if form.is_valid():
-#         comment = Comment(
-#             text=form.cleaned_data['text'],
-#             blog=blog,
-#             # user=self.request.user,
-#         )
-#         comment.save()
-#
-#     return redirect('details blog', blog.id)

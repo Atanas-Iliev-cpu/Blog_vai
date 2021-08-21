@@ -8,4 +8,4 @@ urlpatterns = [
     path('', include('blog_vai.blogs.urls')),
     path('accounts/', include('blog_vai.accounts.urls')),
     path('comment/', include('blog_vai.comments.urls')),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

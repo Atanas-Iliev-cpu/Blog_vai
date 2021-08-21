@@ -26,22 +26,4 @@ class LogInForm(AuthenticationForm):
             "Please enter a correct E-mail address and password."
             " This fields are case-sensitive."
         )}
-    # user = None
-    # username = forms.CharField(
-    #     max_length=50,
-    # )
-    # password = forms.CharField(
-    #     widget=forms.PasswordInput(),
-    # )
-    #
-    # def clean_password(self):
-    #     self.user = authenticate(
-    #         username=self.cleaned_data['username'],
-    #         password=self.cleaned_data['password'],
-    #     )
-    #
-    #     if not self.user:
-    #         raise ValidationError('Incorrect username or password')
-    #
-    # def save(self):
-    #     return self.user
+
