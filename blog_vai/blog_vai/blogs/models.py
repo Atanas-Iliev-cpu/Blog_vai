@@ -22,3 +22,11 @@ class Blog(models.Model):
         UserModel,
         on_delete=models.CASCADE,
     )
+
+
+class Like(models.Model):
+    pet = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.CASCADE,
+    )

@@ -20,7 +20,6 @@ class SiteUser(AbstractBaseUser, PermissionsMixin):
     )
 
     USERNAME_FIELD = 'email'
-    # REQUIRED_FIELDS = ['email']
 
     objects = SiteUserManager()
 
@@ -29,7 +28,14 @@ class Profile(models.Model):
     profile_image = models.ImageField(
         upload_to='profiles',
         blank=True,
+        default='profiles/default.png'
     )
+
+    # def set_image_to_default(self):
+    #     self.profile_image.delete(save=False)  # delete old image file
+    #     self.profile_image = DEFAULT
+    #     self.save()
+
     user = models.OneToOneField(
         SiteUser,
         on_delete=models.CASCADE,

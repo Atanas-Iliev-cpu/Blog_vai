@@ -1,0 +1,122 @@
+{% extends 'shared/base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+
+{% block content %}
+    <!-- Page content-->
+    <div class="container mt-md-2">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Post content-->
+                <article>
+                    <!-- Post header-->
+                    <header class="mb-4">
+                        <!-- Post title-->
+                        <h1 class="fw-bolder mb-1">{{ object.title }}!</h1>
+                        <!-- Post meta content-->
+                        <div class="text-muted fst-italic mb-2">Posted on {{ object.date_joined }}, from
+                            --> {{ object.user }}</div>
+                        <!-- Post categories-->
+                        <a class="badge bg-secondary text-decoration-none link-light"
+                           href="{% url 'user details' object.user.id %}">View author profile</a>
+                        {% if is_owner or request.user.is_superuser %}
+                            <div style="margin-top: 10px;
+                             display: flex;
+                             flex-direction: row;
+                             justify-content: space-between;">
+                                <a href="{% url 'edit blog' object.id %}" class="btn btn-primary">Edit Post</a>
+                                <a href="{% url 'delete blog' object.id%}" class="btn btn-danger">Delete Post</a>
+                            </div>
+                        {% endif %}
+                    </header>
+                    <!-- Preview image figure-->
+                    <figure class="mb-4"><img style="
+    width: 900px;
+    height: 400px;
+" class="img-fluid rounded"
+                                              src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..."/>
+                    </figure>
+                    <!-- Post content-->
+                    <section class="mb-5">
+                        <p class="fs-5 mb-4">{{ object.description}}
+                        </p>
+                    </section>
+                </article>
+                <!-- Comments section-->
+                <section class="mb-5">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <!-- Comment with nested comments-->
+                            {% for comment in comments %}
+                                <div class="d-flex mb-4">
+                                     <!-- Parent comment-->
+                                {% if comment.user.profile.profile_image%}
+                                    <div class="flex-shrink-0"><img class="rounded-circle" src="{{ comment.user.profile.profile_image.url }}" alt="..." width="40px"/></div>
+                                {% else %}
+                                    <div class="flex-shrink-0"><img class="rounded-circle" src= "{% static 'images/default.png' %}" alt="..." width="40px"/></div>
+                                {% endif %}
+                                    <div class="ms-3">
+                                        <div class="fw-bold"><a
+                                                href="{% url 'user details' comment.user.id %}">{{ comment.user }}</a>
+                                        </div>
+                                        <a>{{ comment.text|slice:"0:95" }}</a>
+                                        <a>{{ comment.text|slice:"96:191" }}</a>
+                                        <a>{{ comment.text|slice:"192:287" }}</a>
+                                        <a>{{ comment.text|slice:"288:383" }}</a>
+                                        <a>{{ comment.text|slice:"288:383" }}</a>
+                                        <a>{{ comment.text|slice:"384:479" }}</a>
+                                        <a>{{ comment.text|slice:"480:500" }}</a>
+                                        {% if is_owner or request.user.is_superuser %}
+                                            <a href="{% url 'delete comment' comment.id %}" class="btn btn-danger"
+                                               style="
+    display: flex;
+    flex-direction: column;
+    width: 70px;
+    height: 22px;
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+">Delete</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <!-- Comment form-->
+                            <form method="post" action="{% url 'comment blog' object.id %}">
+                                {% csrf_token %}
+                                {{ comment_form|crispy }}
+                                <button class="btn btn-primary mt-2" type="submit">Join to discussion</button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <!-- Side widgets-->
+            <div class="col-lg-4">
+                <!-- Search widget-->
+                <div class="card mb-4">
+                    <div class="card-header">Search</div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <form action="{% url 'search blog' %}" method="get" style="display: flex;">
+                            <input value="{{ request.GET.q }}" class="form-control" type="text" name="q" placeholder="Search for a post name"
+                                   aria-label="Enter search term..." aria-describedby="button-search"/>
+                            <input class="btn btn-primary" id="button-search" type="submit" value="Search"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header">Side Widget</div>
+                    <div class="card-body">You can put anything you want inside of these side widgets. They are easy to
+                        use, and feature the Bootstrap 5 card component!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+{% endblock %}

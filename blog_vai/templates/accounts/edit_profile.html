@@ -1,19 +1,23 @@
 {% extends 'shared/base.html' %}
+{% load crispy_forms_tags %}
 {% load static %}
+{% load crispy_forms_filters %}
 
 {% block content %}
-
     <div style="
     display: flex;
-    flex-direction: column;
     align-items: center;
+    flex-direction: column;
 ">
-        <form action="{% url 'profile edit' request.user.id %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button class="btn btn-success">Update</button>
-            <a href="{% url 'delete account' user.id %}" class="btn btn-danger">Delete</a>
-        </form>
+    {% if profile.profile_image %}
+    <img src="{{ profile.profile_image.url }}" class="w3-circle" style="
+    height: 280px;
+    width:  200px;" alt="">
+        </br>
+        {% endif %}
+
+      {% crispy form %}
         </div>
 
 {% endblock %}
+

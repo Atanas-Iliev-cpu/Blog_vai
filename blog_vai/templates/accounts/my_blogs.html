@@ -1,29 +1,65 @@
 {% extends 'shared/base.html' %}
 
 {% block content %}
-    <div style="display: flex;
+
+    <div class="container">
+        <div style="display: flex;
     flex-direction: column;
     align-items: center;">
-<h1>Your Posts &dArr;</h1>
-        {% for blog in blogs %}
-
-          <div class="card" style="width: 50rem; background: lightskyblue;
-">
-  <div class="card-body">
-    <h5 class="card-title" style=" font-size: 30px;">{{ blog.title}}</h5>
-    <h6 class="card-subtitle mb-2 text-muted" style=" font-size: 25px;">Author: {{ blog.user }}</h6>
-      <div>
-    <p class="card-text">Posted on: {{ blog.date_joined }}</p>
-          </div>
-    <a href="{% url 'details blog' blog.id %}" class="card-link" style="display: flex;
-    flex-direction: column;
-    align-items: flex-end;">Go to post</a>
-  </div>
-</div>
-            <br/>
-            <br/>
-
-        {% endfor %}
+            <h1>Your Post's</h1>
+            <br></br>
+        </div>
+        <div class="row">
+            <!-- Blog entries-->
+            <div class="col-lg-8">
+                <!-- Featured blog post-->
+                {% for blog in blogs %}
+                    <div class="card mb-4">
+                        <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg"
+                                          alt="..."/></a>
+                        <div class="card-body">
+                            <div class="small text-muted">{{ blog.date_joined }}</div>
+                            <h2 class="card-title">{{ blog.title }}</h2>
+                            {% if blog.description|length > 200 %}
+                                    <p class="card-text">{{ blog.description|slice:"0:300" }} ...</p>
+                                    {% else %}
+                                    <p class="card-text">{{ blog.description}}</p>
+                                    {% endif %}
+                            <a class="btn btn-primary" href="{% url 'detail blog' blog.id %}">Read more →</a>
+                        </div>
+                    </div>
+                {% endfor %}
+{#                <!-- Nested row for non-featured blog posts-->#}
+                <div class="row">
+                    <div class="col-lg-6">
+                    </div>}
+                </div>
+            </div>
+            <!-- Side widgets-->
+            <div class="col-lg-4">
+                <!-- Search widget-->
+                <div class="card mb-4">
+                    <div class="card-header">Search</div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <form action="{% url 'search blog' %}" method="get" style="display: flex;">
+                                <input value="{{ request.GET.q }}" class="form-control" type="text" name="q"
+                                       placeholder="Search for a post name"
+                                       aria-label="Enter search term..." aria-describedby="button-search"/>
+                                <input class="btn btn-primary" id="button-search" type="submit" value="Search"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Side widget-->
+                <div class="card mb-4">
+                    <div class="card-header">Side Widget</div>
+                    <div class="card-body">You can put anything you want inside of these side widgets. They are easy to
+                        use, and feature the Bootstrap 5 card component!
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock %}

@@ -19,7 +19,7 @@ class TestBlogUrls(SimpleTestCase):
         self.assertEquals(resolve(url).func.view_class, BlogCreateView)
 
     def test_details_blog_url_resolves(self):
-        url = reverse('details blog', args=[1])
+        url = reverse('detail blog', args=[1])
         self.assertEquals(resolve(url).func.view_class, BlogDetailView)
 
     def test_edit_blog_url_resolves(self):

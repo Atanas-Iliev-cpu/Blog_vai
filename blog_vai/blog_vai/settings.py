@@ -41,8 +41,10 @@ INSTALLED_APPS = [
     'blog_vai.accounts',
     'blog_vai.blogs',
     'blog_vai.comments',
+    'crispy_forms',
 ]
 
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 
 MIDDLEWARE = [

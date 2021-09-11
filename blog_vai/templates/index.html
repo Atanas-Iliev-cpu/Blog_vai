@@ -1,28 +1,131 @@
 {% extends 'shared/base.html' %}
 
 {% block content %}
-    <div style="display: flex;
-    flex-direction: column;
-    align-items: center;">
 
-        {% for blog in blog_list %}
+    <div class="container">
+        <div class="row">
+            <!-- Blog entries-->
+            <div class="col-lg-8">
+                <!-- Featured blog post-->
+                <div class="card mb-4">
+                    <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg"
+                                      alt="..."/></a>
+                    <div class="card-body">
+                        <div class="small text-muted">Posted on {{ latest_blog.date_joined }}</div>
+                        <div class="small text-muted">Author : {{ latest_blog.user }}</div>
+                        <h2 class="card-title">{{ latest_blog.title }}</h2>
+                        {% if latest_blog.description|length > 200 %}
+                            <p class="card-text">{{ latest_blog.description|slice:"0:300" }} ...</p>
+                        {% else %}
+                            <p class="card-text">{{ latest_blog.description }}</p>
+                        {% endif %}
+                        <a class="btn btn-primary" href="{% url 'detail blog' latest_blog.id %}">Read more
+                            →</a>
+                    </div>
+                </div>
+                <!-- Nested row for non-featured blog posts-->
+                <div class="row">
+                    <div class="col-lg-6">
+                        <!-- Blog post-->
+                        {% for blog in odd_blog %}
+                            <div class="card mb-4">
+                                <a href="#!"><img class="card-img-top"
+                                                  src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..."/></a>
+                                <div class="card-body">
+                                    <div class="small text-muted">Posted on {{ blog.date_joined }}</div>
+                                    <div class="small text-muted">Author: {{ blog.user }}</div>
+                                    <h2 class="card-title h4">{{ blog.title }}</h2>
+                                    {% if blog.description|length > 200 %}
+                                        <p class="card-text">{{ blog.description|slice:"0:200" }} ...</p>
+                                    {% else %}
+                                        <p class="card-text">{{ blog.description }}</p>
+                                    {% endif %}
+                                    <a class="btn btn-primary" href="{% url 'detail blog' blog.id %}">Read more
+                                        →</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="col-lg-6">
+                        <!-- Blog post-->
+                        {% for blog in even_blogs %}
+                            <div class="card mb-4">
+                                <a href="#!"><img class="card-img-top"
+                                                  src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..."/></a>
+                                <div class="card-body">
+                                    <div class="small text-muted">Posted on {{ blog.date_joined }}</div>
+                                    <div class="small text-muted">Author: {{ blog.user }}</div>
+                                    <h2 class="card-title h4">{{ blog.title }}</h2>
+                                    {% if blog.description|length > 200 %}
+                                        <p class="card-text">{{ blog.description|slice:"0:200" }} ...</p>
+                                    {% else %}
+                                        <p class="card-text">{{ blog.description }}</p>
+                                    {% endif %}
+                                    <a class="btn btn-primary" href="{% url 'detail blog' blog.id %}">Read more
+                                        →</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- Pagination-->
+                {#                    <nav aria-label="Pagination">#}
+                {#                        <hr class="my-0" />#}
+                {#                        <ul class="pagination justify-content-center my-4">#}
+                {#                            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>#}
+                {#                            <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>#}
+                {#                            <li class="page-item"><a class="page-link" href="#!">2</a></li>#}
+                {#                            <li class="page-item"><a class="page-link" href="#!">3</a></li>#}
+                {#                            <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>#}
+                {#                            <li class="page-item"><a class="page-link" href="#!">15</a></li>#}
+                {#                            <li class="page-item"><a class="page-link" href="#!">Older</a></li>#}
+                {#                        </ul>#}
+                {#                    </nav>#}
+            </div>
+            <!-- Side widgets-->
+            <div class="col-lg-4">
+                <!-- Search widget-->
+                <div class="card mb-4">
+                    <div class="card-header">Search</div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <form action="{% url 'search blog' %}" method="get" style="display: flex;">
+                                <input value="{{ request.GET.q }}" class="form-control" type="text" name="q"
+                                       placeholder="Search for a post name"
+                                       aria-label="Enter search term..." aria-describedby="button-search"/>
+                                <input class="btn btn-primary" id="button-search" type="submit" value="Search"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Side widget-->
+                <div class="card mb-4" style="height: 332px;">
+                    <div class="card-header">Your advertising here</div>
+                    <div class="card-body">You can put anything you want inside this fields. Their goal is advertising
+                        some stuff !
+                    </div>
+                </div>
 
-            <div class="card" style="width: 50rem; background: lightskyblue;
-">
-  <div class="card-body">
-    <h5 class="card-title" style=" font-size: 30px;">{{ blog.title}}</h5>
-    <h6 class="card-subtitle mb-2 text-muted" style=" font-size: 25px;">Author: {{ blog.user }}</h6>
-      <div>
-    <p class="card-text">Posted on: {{ blog.date_joined }}</p>
-          </div>
-    <a href="{% url 'details blog' blog.id %}" class="card-link" style="display: flex;
-    flex-direction: column;
-    align-items: flex-end;">Read more..</a>
-  </div>
-</div>
-            <br/>
-            <br/>
-
-        {% endfor %}
+                {#                    <div class="card mb-4" style="height: 332px; top: 150px;">#}
+                {#                        <div class="card-header">Your advertising here</div>#}
+                {#                        <div class="card-body">You can put anything you want inside this fields. Their goal is advertising some stuff !</div>#}
+                {#                    </div>#}
+                {##}
+                {#                    <div class="card mb-4" style="height: 332px; top: 150px;">#}
+                {#                        <div class="card-header">Your advertising here</div>#}
+                {#                        <div class="card-body">You can put anything you want inside this fields. Their goal is advertising some stuff !</div>#}
+                {#                    </div>#}
+                {##}
+                {#                    <div class="card mb-4" style="height: 332px; top: 150px;">#}
+                {#                        <div class="card-header">Your advertising here</div>#}
+                {#                        <div class="card-body">You can put anything you want inside this fields. Their goal is advertising some stuff !</div>#}
+                {#                    </div>#}
+                {##}
+                {#                    <div class="card mb-4" style="height: 332px; top: 150px;">#}
+                {#                        <div class="card-header">Your advertising here</div>#}
+                {#                        <div class="card-body">You can put anything you want inside this fields. Their goal is advertising some stuff !</div>#}
+                {#                    </div>#}
+            </div>
+        </div>
     </div>
 {% endblock %}

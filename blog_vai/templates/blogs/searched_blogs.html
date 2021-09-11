@@ -1,30 +1,57 @@
 {% extends 'shared/base.html' %}
 
 {% block content %}
+    {#    <div style="display: flex;#}
+    {#    flex-direction: column;#}
+    {#    align-items: center;">#}
+    {##}
+    {#        {% for blog in blog_list %}#}
+    {##}
+    {#            <div class="card" style="width: 50rem; background: lightskyblue;#}
+    {#">#}
+    {#  <div class="card-body">#}
+    {#    <h5 class="card-title" style=" font-size: 30px;">{{ blog.title}}</h5>#}
+    {#    <h6 class="card-subtitle mb-2 text-muted" style=" font-size: 25px;">Author: {{ blog.user }}</h6>#}
+    {#      <div>#}
+    {#    <p class="card-text">Posted on: {{ blog.date_joined }}</p>#}
+    {#          </div>#}
+    {#    <a href="{% url 'detail blog from css' blog.id %}" class="card-link" style="display: flex;#}
+    {#    flex-direction: column;#}
+    {#    align-items: flex-end;">Read more..</a>#}
+    {#  </div>#}
+    {#</div>#}
+    {#            <br/>#}
+    {#            <br/>#}
+    {##}
+    {#        {% endfor %}#}
+    {#    </div>#}
+
     <div class="container">
         <div style="display: flex;
     flex-direction: column;
     align-items: center;">
-            <h1>Posts in which you took part &dArr;</h1>
-            <br></br>
+            {% if object_list %}
+                <h1>Results from search</h1>
+                <br></br>
+            {% else %}
+                <h1>No posts with this name were found !</h1>
+                <h1>Try with another name.</h1>
+                <br></br>
+            {% endif %}
         </div>
         <div class="row">
             <!-- Blog entries-->
             <div class="col-lg-8">
                 <!-- Featured blog post-->
-                {% for comment in comments %}
+                {% for blog in object_list %}
                     <div class="card mb-4">
                         <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg"
                                           alt="..."/></a>
                         <div class="card-body">
-                            <div class="small text-muted">{{ comment.blog.date_joined }}</div>
-                            <h2 class="card-title">{{ comment.blog.title}}</h2>
-                            {% if comment.blog.description|length > 200 %}
-                                    <p class="card-text">{{ comment.blog.description|slice:"0:300" }} ...</p>
-                                    {% else %}
-                                    <p class="card-text">{{ comment.blog.description}}</p>
-                                    {% endif %}
-                            <a class="btn btn-primary" href="{% url 'detail blog' comment.blog.id %}">Read more →</a>
+                            <div class="small text-muted">{{ blog.date_joined }}</div>
+                            <h2 class="card-title">{{ blog.title }}</h2>
+                            <p class="card-text">{{ blog.description }}</p>
+                            <a class="btn btn-primary" href="{% url 'detail blog from css' blog.id %}">Read more →</a>
                         </div>
                     </div>
                 {% endfor %}
@@ -68,6 +95,28 @@
                         </div>
                     </div>
                 </div>
+                <!-- Categories widget-->
+                {#                    <div class="card mb-4">#}
+                {#                        <div class="card-header">Categories</div>#}
+                {#                        <div class="card-body">#}
+                {#                            <div class="row">#}
+                {#                                <div class="col-sm-6">#}
+                {#                                    <ul class="list-unstyled mb-0">#}
+                {#                                        <li><a href="#!">Web Design</a></li>#}
+                {#                                        <li><a href="#!">HTML</a></li>#}
+                {#                                        <li><a href="#!">Freebies</a></li>#}
+                {#                                    </ul>#}
+                {#                                </div>#}
+                {#                                <div class="col-sm-6">#}
+                {#                                    <ul class="list-unstyled mb-0">#}
+                {#                                        <li><a href="#!">JavaScript</a></li>#}
+                {#                                        <li><a href="#!">CSS</a></li>#}
+                {#                                        <li><a href="#!">Tutorials</a></li>#}
+                {#                                    </ul>#}
+                {#                                </div>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                    </div>#}
                 <!-- Side widget-->
                 <div class="card mb-4">
                     <div class="card-header">Side Widget</div>
@@ -78,5 +127,4 @@
             </div>
         </div>
     </div>
-
 {% endblock %}

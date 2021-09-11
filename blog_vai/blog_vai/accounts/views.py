@@ -1,13 +1,9 @@
-from collections import Set
-
 from django.contrib.auth import login, get_user_model, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, FormView, ListView, DeleteView, UpdateView
-from django.views.generic.detail import SingleObjectMixin
-
 from blog_vai.accounts.forms import RegisterForm, LogInForm, ProfileForm
 from blog_vai.accounts.models import Profile
 from blog_vai.blogs.models import Blog
@@ -37,14 +33,8 @@ class AccountDeleteView(LoginRequiredMixin, DeleteView):
 
 class ProfileDetailsView(LoginRequiredMixin, FormView):
     form_class = ProfileForm
-    template_name = 'accounts/user_profile.html'
+    template_name = 'accounts/your_profile.html'
     success_url = reverse_lazy('profile details')
-
-    # def form_valid(self, form):
-    #     profile = Profile.objects.get(pk=self.request.user.id)
-    #     profile.profile_image = form.cleaned_data['profile_image']
-    #     profile.save()
-    #     return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -53,15 +43,31 @@ class ProfileDetailsView(LoginRequiredMixin, FormView):
         comments = Comment.objects.filter(user_id=self.request.user.id)
         comment_blogs = Comment.objects.filter(user_id=self.request.user.id).distinct('blog_id')
 
-        context['blogs'] = user_blogs
+        if not profile.profile_image:
+            profile.profile_image = 'images/default.png'
+
+        context['blogs_cnt'] = len(user_blogs)
         context['profile'] = profile
-        context['comments'] = comments
-        context['comment_blogs'] = comment_blogs
+        context['comments_cnt'] = len(comments)
+        # context['comment_blogs'] = comment_blogs
 
         return context
 
 
+def user_details(request, pk):
+    user = UserModel.objects.get(pk=pk)
 
+    context = {
+        'user': user,
+        'blogs': user.blog_set.all(),
+        'blogs_cnt': len(user.blog_set.all()),
+        'comments': user.comment_set.all(),
+        'comments_cnt': len(user.comment_set.all()),
+        'profile': user.profile,
+        # 'comment_blogs': Comment.objects.filter(user_id=user.id).distinct('blog_id'),
+    }
+
+    return render(request, 'accounts/user_profile.html', context)
 
 
 class RegisterView(CreateView):
@@ -92,7 +98,7 @@ def logout_user(request):
 class UsersListView(ListView):
     model = UserModel
     # template_name = 'shared/base.html'
-    template_name = 'accounts/demo_all_users.html'
+    template_name = 'accounts/all_users.html'
 
 
 class MyAllBlogsView(ListView):
@@ -103,11 +109,8 @@ class MyAllBlogsView(ListView):
         context = super().get_context_data(**kwargs)
         # profile = Profile.objects.get(pk=self.request.user.id)
         user_blogs = Blog.objects.filter(user_id=self.request.user.id)
-        # comments = Comment.objects.filter(user_id=self.request.user.id)
 
         context['blogs'] = user_blogs
-        # context['profile'] = profile
-        # context['comments'] = comments
 
         return context
 
@@ -143,4 +146,3 @@ class FavBlogsListView(ListView):
         context['comments'] = comments
 
         return context
-

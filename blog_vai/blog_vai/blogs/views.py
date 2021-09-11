@@ -6,39 +6,22 @@ from django.views import View
 from django.views.generic import ListView, CreateView, DetailView, FormView, UpdateView, DeleteView
 from django.views.generic.detail import SingleObjectMixin
 
-from blog_vai.blogs.models import Blog
+from blog_vai.blogs.forms import BlogCreateForm
+from blog_vai.blogs.models import Blog, Like
 from blog_vai.comments.forms import CommentForm
 from blog_vai.comments.models import Comment
 
 
-class BlogDeleteView(LoginRequiredMixin, DeleteView):
-    model = Blog
-    template_name = 'blogs/demo_blog_delete.html'
-    success_url = reverse_lazy('index')
-
-
-class BlogEditView(LoginRequiredMixin, UpdateView):
-    model = Blog
-    template_name = 'blogs/demo_blog_edit.html'
-    fields = ['title', 'description']
-    success_url = reverse_lazy('index')
-
-
 class BlogDetailView(LoginRequiredMixin, DetailView):
     model = Blog
-    # template_name = 'blogs/detail-blog.html'
-    template_name = 'blogs/demo_blog_detail.html'
+    template_name = 'blogs/blog_detail.html'
     context_object_name = 'Blog'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         blog = context['Blog']
 
-        # blog.likes_count = blog.like_set.count()
         is_owner = blog.user == self.request.user
-
-        # is_liked_by_user = blog.like_set.filter(user_id=self.request.user.id) \
-        #     .exists()
         context['comment_form'] = CommentForm(
             initial={
                 'blog_pk': self.object.id,
@@ -46,23 +29,47 @@ class BlogDetailView(LoginRequiredMixin, DetailView):
         )
         context['comments'] = blog.comment_set.all()
         context['is_owner'] = is_owner
-        # context['is_liked'] = is_liked_by_user
 
         return context
 
 
+class BlogDeleteView(LoginRequiredMixin, DeleteView):
+    model = Blog
+    template_name = 'blogs/blog_delete.html'
+    success_url = reverse_lazy('index')
+
+
+class BlogEditView(LoginRequiredMixin, UpdateView):
+    model = Blog
+    template_name = 'blogs/blog_edit.html'
+    fields = ['title', 'description']
+    success_url = reverse_lazy('index')
+
+
 class BlogListView(ListView):
     model = Blog
-    # template_name = 'shared/base.html'
     template_name = 'index.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        all_blogs = Blog.objects.all()
+        latest_blog = Blog.objects.latest('id')
+        context['latest_blog'] = latest_blog
+        context['even_blogs'] = [all_blogs[i] for i in range(len(all_blogs)) if
+                                 all_blogs[i].title != latest_blog.title and i % 2 == 0]
+        context['odd_blog'] = [all_blogs[i] for i in range(len(all_blogs)) if
+                               all_blogs[i].title != latest_blog.title and i % 2 != 0]
+
+        return context
 
 
 class BlogCreateView(LoginRequiredMixin, CreateView):
     model = Blog
-    fields = ('title', 'theme', 'description')
+    form_class = BlogCreateForm
+    # fields = ('title', 'theme', 'description')
     success_url = reverse_lazy('index')
-    template_name = 'blogs/demo_blog_create.html'
+    template_name = 'blogs/blog_create.html'
 
     def form_valid(self, form):
         blog = form.save(commit=False)
@@ -91,7 +98,20 @@ class BlogCommentView(LoginRequiredMixin, View):
         )
         comment.save()
 
-        return redirect('details blog', blog.id)
+        return redirect('detail blog', blog.id)
 
     def form_invalid(self, form):
         pass
+
+
+class SearchBlogView(ListView):
+    template_name = 'blogs/searched_blogs.html'
+    model = Blog
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            object_list = self.model.objects.filter(title__icontains=query)
+        else:
+            object_list = self.model.objects.none()
+        return object_list

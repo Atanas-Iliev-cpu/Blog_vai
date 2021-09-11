@@ -1,0 +1,15 @@
+{% extends 'shared/base.html' %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
+
+
+{% block content %}
+    <div style="
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;">
+          {% crispy form %}
+    </div>
+{% endblock %}
