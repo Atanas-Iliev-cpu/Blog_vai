@@ -2,7 +2,8 @@ from django import forms
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Row, Column
+from crispy_forms.layout import Submit, Layout, Row, Column, Button, HTML
+from django.urls import reverse
 
 from blog_vai.accounts.models import Profile
 
@@ -10,9 +11,10 @@ UserModel = get_user_model()
 
 
 class ProfileForm(forms.ModelForm):
+
     class Meta:
         model = Profile
-        fields = ('profile_image', 'first_name', 'last_name', 'phone_number')
+        fields = ('profile_image', 'first_name', 'last_name', 'phone_number', 'gender')
         # fields = '__all__'
 
     def __init__(self, *args, **kwargs):
@@ -26,10 +28,22 @@ class ProfileForm(forms.ModelForm):
             Row(
                 Column('first_name', css_class='form-group col-md-6 mb-2'),
                 Column('last_name', css_class='form-group col-md-6 mb-0'),
-                css_class='form-row'
+
+                # css_class='form-row'
             ),
-            'phone_number',
-            Submit('submit', 'Update', css_class='mt-3' )
+
+            Row(
+                'gender', css_class='form-group row-md-6 mb-2 ',
+            ),
+
+            Row(
+                'phone_number', css_class='form-group row-md-6 mb-2 ',
+            ),
+
+            Row(
+                Submit('submit', 'Update', css_class='mt-3 mb-2'),
+                HTML('<a class="btn btn-danger" href="javascript:history.back()">Cancel</a>')
+            )
         )
 
 

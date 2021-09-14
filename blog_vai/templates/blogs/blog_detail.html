@@ -32,9 +32,9 @@
                     <!-- Preview image figure-->
                     <figure class="mb-4"><img style="
     width: 900px;
-    height: 400px;
+    height: auto;
 " class="img-fluid rounded"
-                                              src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..."/>
+                                              src="{{ object.blog_image.url }}"/>
                     </figure>
                     <!-- Post content-->
                     <section class="mb-5">
@@ -50,14 +50,11 @@
                             {% for comment in comments %}
                                 <div class="d-flex mb-4">
                                      <!-- Parent comment-->
-                                {% if comment.user.profile.profile_image%}
                                     <div class="flex-shrink-0"><img class="rounded-circle" src="{{ comment.user.profile.profile_image.url }}" alt="..." width="40px"/></div>
-                                {% else %}
-                                    <div class="flex-shrink-0"><img class="rounded-circle" src= "{% static 'images/default.png' %}" alt="..." width="40px"/></div>
-                                {% endif %}
                                     <div class="ms-3">
-                                        <div class="fw-bold"><a
-                                                href="{% url 'user details' comment.user.id %}">{{ comment.user }}</a>
+                                        <div class="">
+                                           <b><a href="{% url 'user details' comment.user.id %}">{{ comment.user }}</a></b>
+                                                <a> on {{ comment.date_joined|date }}, at {{ comment.date_joined|time }}</a>
                                         </div>
                                         <a>{{ comment.text|slice:"0:95" }}</a>
                                         <a>{{ comment.text|slice:"96:191" }}</a>

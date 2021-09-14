@@ -14,8 +14,7 @@
                 <!-- Featured blog post-->
                 {% for comment in comments %}
                     <div class="card mb-4">
-                        <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg"
-                                          alt="..."/></a>
+                        <a href="#!"><img class="card-img-top" src="{{ comment.blog.blog_image.url}}"/></a>
                         <div class="card-body">
                             <div class="small text-muted">{{ comment.blog.date_joined }}</div>
                             <h2 class="card-title">{{ comment.blog.title}}</h2>

@@ -5,11 +5,12 @@
     <div class="container">
         <div class="row">
             <!-- Blog entries-->
-            <div class="col-lg-8">
+            <div class="col-lg-9">
                 <!-- Featured blog post-->
                 <div class="card mb-4">
-                    <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg"
-                                      alt="..."/></a>
+                {% if latest_blog.blog_image %}
+                    <a href="#!"><img class="card-img-top" src="{{ latest_blog.blog_image.url}}" style="width: 100%;height: 555px;" /></a>
+                {% endif %}
                     <div class="card-body">
                         <div class="small text-muted">Posted on {{ latest_blog.date_joined }}</div>
                         <div class="small text-muted">Author : {{ latest_blog.user }}</div>
@@ -30,7 +31,7 @@
                         {% for blog in odd_blog %}
                             <div class="card mb-4">
                                 <a href="#!"><img class="card-img-top"
-                                                  src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..."/></a>
+                                                  src="{{ blog.blog_image.url}}" alt="..."/></a>
                                 <div class="card-body">
                                     <div class="small text-muted">Posted on {{ blog.date_joined }}</div>
                                     <div class="small text-muted">Author: {{ blog.user }}</div>
@@ -51,7 +52,7 @@
                         {% for blog in even_blogs %}
                             <div class="card mb-4">
                                 <a href="#!"><img class="card-img-top"
-                                                  src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..."/></a>
+                                                  src="{{ blog.blog_image.url}}"/></a>
                                 <div class="card-body">
                                     <div class="small text-muted">Posted on {{ blog.date_joined }}</div>
                                     <div class="small text-muted">Author: {{ blog.user }}</div>
@@ -83,7 +84,7 @@
                 {#                    </nav>#}
             </div>
             <!-- Side widgets-->
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <!-- Search widget-->
                 <div class="card mb-4">
                     <div class="card-header">Search</div>

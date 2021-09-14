@@ -37,6 +37,7 @@ class ProfileDetailsView(LoginRequiredMixin, FormView):
     success_url = reverse_lazy('profile details')
 
     def get_context_data(self, **kwargs):
+
         context = super().get_context_data(**kwargs)
         profile = Profile.objects.get(pk=self.request.user.id)
         user_blogs = Blog.objects.filter(user_id=self.request.user.id)
@@ -44,7 +45,8 @@ class ProfileDetailsView(LoginRequiredMixin, FormView):
         comment_blogs = Comment.objects.filter(user_id=self.request.user.id).distinct('blog_id')
 
         if not profile.profile_image:
-            profile.profile_image = 'images/default.png'
+            profile.profile_image = 'defaults/profile_default.png'
+            profile.save()
 
         context['blogs_cnt'] = len(user_blogs)
         context['profile'] = profile

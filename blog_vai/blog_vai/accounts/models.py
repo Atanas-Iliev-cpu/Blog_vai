@@ -25,16 +25,20 @@ class SiteUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Profile(models.Model):
+
+    TYPE_CHOICE_MALE = 'Male'
+    TYPE_CHOICE_FEMALE = 'Female'
+
+    TYPE_CHOICES = (
+        (TYPE_CHOICE_MALE, 'Male'),
+        (TYPE_CHOICE_FEMALE, 'Female'),
+    )
+
     profile_image = models.ImageField(
         upload_to='profiles',
         blank=True,
-        default='profiles/default.png'
+        default='defaults/profile_default.png'
     )
-
-    # def set_image_to_default(self):
-    #     self.profile_image.delete(save=False)  # delete old image file
-    #     self.profile_image = DEFAULT
-    #     self.save()
 
     user = models.OneToOneField(
         SiteUser,
@@ -50,6 +54,11 @@ class Profile(models.Model):
         max_length=50,
         blank=True,
         validators=[first_letter_is_capital_validator]
+    )
+    gender = models.CharField(
+        max_length=6,
+        choices=TYPE_CHOICES,
+
     )
     email = models.EmailField(
         # unique=True,
