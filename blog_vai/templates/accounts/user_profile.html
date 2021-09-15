@@ -16,11 +16,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex flex-column align-items-center text-center">
-                                {#                      {% if profile.profile_image %}#}
                                 <img src="{{ profile.profile_image.url }}" alt="" class="rounded-circle" width="200">
-                                {#                          {% else %}#}
-                                {#                    <img src="{% static 'profiles/anonymous.jpg' %}" alt="" class="rounded-circle" width="150">#}
-                                {#                      {% endif %}#}
                                 <div class="mt-3">
                                     <h4>Post's : {{ blogs_cnt }} </h4>
                                     <h4>Comment's : {{ comments_cnt }} </h4>

@@ -37,7 +37,6 @@ class ProfileDetailsView(LoginRequiredMixin, FormView):
     success_url = reverse_lazy('profile details')
 
     def get_context_data(self, **kwargs):
-
         context = super().get_context_data(**kwargs)
         profile = Profile.objects.get(pk=self.request.user.id)
         user_blogs = Blog.objects.filter(user_id=self.request.user.id)
@@ -99,7 +98,6 @@ def logout_user(request):
 
 class UsersListView(ListView):
     model = UserModel
-    # template_name = 'shared/base.html'
     template_name = 'accounts/all_users.html'
 
 
@@ -109,27 +107,11 @@ class MyAllBlogsView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # profile = Profile.objects.get(pk=self.request.user.id)
         user_blogs = Blog.objects.filter(user_id=self.request.user.id)
 
         context['blogs'] = user_blogs
 
         return context
-
-    # object = None
-    # # paginate_by = 3
-    # #
-    # def get(self, request, *args, **kwargs):
-    #     self.object = self.get_object(queryset=Blog.objects.all())
-    #     return super().get(request, *args, **kwargs)
-    #
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['blogs'] = self.object
-    #     return context
-    #
-    # def get_queryset(self):
-    #     return self.object.article_set.all()
 
 
 class FavBlogsListView(ListView):
@@ -138,13 +120,9 @@ class FavBlogsListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # profile = Profile.objects.get(pk=self.request.user.id)
         user_blogs = Blog.objects.filter(user_id=self.request.user.id)
-        # fav_blogs = Blog.objects.filter(user_id=self.request.user.id)
         comments = Comment.objects.filter(user_id=self.request.user.id).distinct('blog_id')
 
-        # context['blogs'] = user_blogs
-        # context['profile'] = profile
         context['comments'] = comments
 
         return context

@@ -18,12 +18,11 @@ class BlogDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         blog = context['Blog']
-        # blog = Blog
         if not blog.blog_image:
             blog.blog_image = 'defaults/blog_default.png'
 
-
         is_owner = blog.user == self.request.user
+
         context['comment_form'] = CommentForm(
             initial={
                 'blog_pk': self.object.id,
@@ -47,12 +46,6 @@ class BlogEditView(LoginRequiredMixin, UpdateView):
     form_class = BlogEditForm
     success_url = reverse_lazy('index')
 
-    # def form_valid(self, form):
-    #     blog = Blog.objects.get(pk=self.request.user.id)
-    #     blog.blog_image = form.cleaned_data['blog_image']
-    #     blog.save()
-    #     return super().form_valid(form)
-
 
 class BlogListView(ListView):
     model = Blog
@@ -62,16 +55,13 @@ class BlogListView(ListView):
         context = super().get_context_data(**kwargs)
 
         all_blogs = Blog.objects.all()
-        latest_blog = Blog.objects.latest('id')
-
-        if not latest_blog.blog_image:
-            latest_blog.blog_image = 'defaults/blog_default.png'
-            latest_blog.save()
 
         for blog in all_blogs:
             if not blog.blog_image:
                 blog.blog_image = 'defaults/blog_default.png'
                 blog.save()
+
+        latest_blog = Blog.objects.latest('id')
 
         context['latest_blog'] = latest_blog
         context['even_blogs'] = [all_blogs[i] for i in range(len(all_blogs)) if
@@ -79,14 +69,12 @@ class BlogListView(ListView):
         context['odd_blog'] = [all_blogs[i] for i in range(len(all_blogs)) if
                                all_blogs[i].title != latest_blog.title and i % 2 != 0]
 
-
         return context
 
 
 class BlogCreateView(LoginRequiredMixin, CreateView):
     model = Blog
     form_class = BlogCreateForm
-    # fields = ('title', 'theme', 'description')
     success_url = reverse_lazy('index')
     template_name = 'blogs/blog_create.html'
 
